@@ -73,4 +73,46 @@ const PROJECT_LIST = [
     },
 ];
 
-//Escribe aquí tu solución / escriviu aquí la vostra solució:
+// MGG - render de la lista de proyectos a partir de los datos de PROJECT_LIST y CATEGORY_LIST
+const renderProjects = () => {
+  const projectListNode = document.querySelector(".js-project-list");
+  const projectTemplate = document.getElementById("tpl-project");
+  const tagTemplate = document.getElementById("tpl-tag");
+  const fragment = document.createDocumentFragment();
+
+  PROJECT_LIST.forEach((project) => {
+    const projectFragment = projectTemplate.content.cloneNode(true);
+    const projectElement = projectFragment.querySelector(".js-project");
+    const category = CATEGORY_LIST.find((c) => c.id === project.categoryId);
+    projectElement.dataset.id = project.id;
+    projectElement.dataset.tags = project.tags.join(",");
+    projectElement.dataset.search = project.search.join(",");
+    projectElement.dataset.archived = project.archived;
+    projectFragment.querySelector(".js-name").textContent = project.name;
+    projectFragment.querySelector(".js-progress").textContent = project.progress;
+    projectFragment.querySelector(".js-excerpt").innerHTML = project.excerpt;
+    projectFragment.querySelector(".js-category").textContent = category ? category.name : "";
+    const tagsContainer = projectFragment.querySelector(".js-tags");
+    tagsContainer.innerHTML = "";
+    project.tags.forEach((tag) => {
+      const tagFragment = tagTemplate.content.cloneNode(true);
+      const tagLink = tagFragment.querySelector(".js-tag-link");
+      tagLink.textContent = tag;
+      tagLink.dataset.tag = tag;
+      tagLink.href = "#";
+      tagsContainer.appendChild(tagFragment);
+    });
+
+    if (project.archived) {
+      projectElement.classList.add("archived");
+    }
+
+    if (project.progress === 100) {
+      projectElement.classList.add("completed");
+    }
+
+    fragment.appendChild(projectFragment);
+  });
+  projectListNode.appendChild(fragment);
+};
+renderProjects();

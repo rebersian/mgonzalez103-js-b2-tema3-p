@@ -20,9 +20,15 @@
     </div>
 
     <!-- BEGIN templates zone -->
-
+    <template id="todo-tpl">
+        <li class="js-todo" data-todo="[*name*]" data-done="[*done*]">
+            <span class="js-todo-name">[*name*]</span>
+            <a class="js-todo-done">complete</a>
+            <a class="js-todo-delete">delete</a>
+        </li>
+    </template>
     <!-- END templates zone -->
-
+     
     <script src="u2e1.js"></script>
 
 </body>
